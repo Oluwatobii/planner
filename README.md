@@ -26,7 +26,7 @@ Follow these steps to get the project up and running on your local machine.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/planner.git
+   git clone https://github.com/Oluwatobii/planner.git
    cd planner
    ```
 
@@ -42,7 +42,7 @@ Create a .env file in the root directory with the following variables:
 
 ```env
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=http://localhost:8030
 NEXTAUTH_SECRET=your-secret
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
