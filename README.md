@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Planner
+
+Planner is a sleek and intuitive scheduling app built with Next.js that allows users to effortlessly plan, manage, and view their events in a calendar format. Whether organizing daily tasks or coordinating important events, Planner ensures you stay on top of your schedule with ease.
+
+## Features
+
+- **Next.js**: Fast, scalable, and modern React framework.
+- **TypeScript**: Strongly typed programming to catch errors early and improve code quality.
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+- **Prisma ORM**: Elegant and powerful database toolkit for PostgreSQL.
+- **Auth.js (NextAuth)**: Authentication via Google or GitHub.
+- **Zod**: TypeScript-first schema declaration and validation library.
+- **TUI Calendar**: Feature-rich calendar component for scheduling events.
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to get the project up and running on your local machine.
+
+### Prerequisites
+
+- Node.js
+- PostgreSQL
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/planner.git
+   cd planner
+   ```
+
+2. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Set up your environment variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a .env file in the root directory with the following variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```env
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+```
 
-## Learn More
+4. Set up the database:
 
-To learn more about Next.js, take a look at the following resources:
+```
+npx prisma migrate dev --name init
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Run the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+npm run dev
+```
