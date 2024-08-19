@@ -4,6 +4,10 @@ import { Inter } from 'next/font/google'
 
 import { Header } from '@/components'
 
+import Themes from '@/contexts/Theme'
+
+import ApplicationWrapper from '@/contexts/Application'
+
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,12 +22,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} dark:bg-medium`}>
-        <>
-          <Header />
-          <main className="flex justify-center p-1">{children}</main>
-        </>
+        <Themes>
+          <ApplicationWrapper>
+            <Header />
+            <main className="flex justify-center p-1">{children}</main>
+          </ApplicationWrapper>
+        </Themes>
       </body>
     </html>
   )
