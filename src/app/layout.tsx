@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: 'Planner',
   description: 'Plan your day, own your time.',
   icons: {
-    icon: '/planner.png'
+    icon: '/planner.svg'
   }
 }
 
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Themes>
           <ApplicationWrapper>
             <Header />
-            <main className="flex justify-center p-1">{children}</main>
+            <main className="flex justify-center p-[2px]">{children}</main>
           </ApplicationWrapper>
         </Themes>
       </body>

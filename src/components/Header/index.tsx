@@ -1,17 +1,19 @@
 'use client'
 
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 
 import { useTheme } from 'next-themes'
 
 import { BsSunFill } from 'react-icons/bs'
 
-import { FaMoon, FaSearch, FaUserCircle, FaCalendarAlt } from 'react-icons/fa'
+import { FaMoon, FaSearch, FaUserCircle } from 'react-icons/fa'
+
+import Image from 'next/image'
 
 import { AppContext } from '@/contexts/Application'
 
 export default function Header() {
-  const user = true
+  const user = false
 
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -19,10 +21,10 @@ export default function Header() {
 
   if (user)
     return (
-      <nav className="bg-white dark:bg-gray-900 p-2 shadow-md dark:shadow-dark-md">
+      <nav className="bg-white dark:bg-gray-900 p-[5px] shadow-md dark:shadow-dark-md">
         <div className="px-4 mx-auto flex items-center justify-between relative">
-          <div className="flex items-center space-x-2">
-            <FaCalendarAlt className="text-xl text-gray-900 dark:text-white" />
+          <div className="flex items-center space-x-1">
+            <Image src="/planner.png" alt="Logo" width={50} height={50} className="mx-auto" />
             <div className="text-lg font-bold text-gray-900 dark:text-white">Planner</div>
           </div>
 
