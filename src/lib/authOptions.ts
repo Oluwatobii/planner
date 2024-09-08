@@ -18,8 +18,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // Save Users to Database
-      console.log({ user, account, profile, email, credentials })
+      // console.log({ user, account, profile, email, credentials })
       return true
     }
-  }
+  },
+  secret: process.env.NEXTAUTH_SECRET
 }

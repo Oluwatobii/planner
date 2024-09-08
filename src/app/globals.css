@@ -6,4 +6,18 @@
   .dark\:shadow-dark-md {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -2px rgba(0, 0, 0, 0.7);
   }
+
+  .spinner-doughnut {
+    @apply w-8 h-8 border-4 rounded-full;
+    border-color: transparent;
+    border-top-color: #ec4899; /* Pink color */
+    border-right-color: #8b5cf6; /* Purple color */
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }

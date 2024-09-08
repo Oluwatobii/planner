@@ -41,13 +41,25 @@ npm install
 Create a .env file in the root directory with the following variables:
 
 ```env
-DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
-NEXTAUTH_URL=http://localhost:8030
-NEXTAUTH_SECRET=your-secret
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
+DATABASE_URL=""
+PORT=
+NODE_ENV=""
+
+NEXTAUTH_SECRET=""
+NEXTAUTH_URL=""
+
+DOMAIN="planner.tbello.dev"
+
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+
+APPLICATION_NAME="Planner"
+MAIL_CREDENTIALS_USER=""
+MAIL_CREDENTIALS_PASSWORD=""
+MAIL_DISABLED=""
 ```
 
 4. Set up the database:

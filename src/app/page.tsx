@@ -1,23 +1,11 @@
-import { getServerSession } from 'next-auth/next'
-
-import { redirect } from 'next/navigation'
-
-import { authOptions } from '@/lib/authOptions'
-
 import Image from 'next/image'
 
 import { Authentication } from '@/components'
 
 export default async function LandingPage() {
-  const session = await getServerSession(authOptions)
-
-  if (session) {
-    redirect('/home')
-  }
-
   return (
     <div
-      className="w-screen h-screen flex items-center justify-center"
+      className="w-screen h-screen flex items-center justify-center rounded-lg"
       style={{ background: 'linear-gradient(to top right, #ec4899, #8b5cf6 60%)' }}
     >
       <div
@@ -36,7 +24,7 @@ export default async function LandingPage() {
         </div>
 
         <div className="relative z-10 text-center text-white">
-          <h1 className="text-1xl md:text-5xl font-bold tracking-wider">PLAN YOUR DAY</h1>
+          <h1 className="text-1xl md:text-5xl font-bold tracking-wider">PLAN YOUR DAY, OWN YOUR TIME.</h1>
 
           <div className="mt-[70px] space-y-3 md:space-y-4 flex flex-col items-center w-full md:max-w-md lg:max-w-lg mx-auto">
             <Authentication />

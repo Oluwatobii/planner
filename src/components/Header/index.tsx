@@ -98,7 +98,7 @@ function ThemeToggle() {
 
   return (
     <div
-      className="relative w-16 h-8 flex items-center bg-teal-500 dark:bg-gray-700 cursor-pointer rounded-full px-[2px] border-2 border-gray-300 dark:border-gray-500"
+      className="relative w-16 h-8 flex items-center cursor-pointer rounded-full px-[2px] border-2 border-gray-300 dark:border-gray-500"
       onClick={() => {
         if (resolvedTheme === 'dark') {
           setTheme('light')
@@ -106,6 +106,7 @@ function ThemeToggle() {
           setTheme('dark')
         }
       }}
+      style={{ background: 'linear-gradient(to top right, #db2777, #6d28d9 60%)' }}
     >
       <FaMoon className="text-white" size={18} />
       <div

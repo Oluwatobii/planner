@@ -4,4 +4,8 @@ import Authentication from './Authentication'
 
 import SessionWrapper from './SessionWrapper'
 
-export { Header, Authentication, SessionWrapper }
+import Spinner from './Spinner'
+
+import ClientLayout from './ClientLayout'
+
+export { Header, Authentication, SessionWrapper, Spinner, ClientLayout }
