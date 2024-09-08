@@ -10,21 +10,32 @@ import { FaMoon, FaSearch, FaUserCircle } from 'react-icons/fa'
 
 import Image from 'next/image'
 
+import { useSession, signOut } from 'next-auth/react'
+
 import { AppContext } from '@/contexts/Application'
 
 export default function Header() {
-  const user = false
+  const { data: session } = useSession()
+
+  const { resolvedTheme } = useTheme()
 
   const [menuOpen, setMenuOpen] = useState(false)
 
   const context = useContext(AppContext)
 
-  if (user)
+  if (session)
     return (
       <nav className="bg-white dark:bg-gray-900 p-[5px] shadow-md dark:shadow-dark-md">
         <div className="px-4 mx-auto flex items-center justify-between relative">
           <div className="flex items-center space-x-1">
-            <Image src="/planner.png" alt="Logo" width={50} height={50} className="mx-auto" />
+            <Image
+              src="/planner.png"
+              alt="Logo"
+              width={50}
+              height={50}
+              className="mx-auto"
+              style={{ filter: resolvedTheme === 'dark' ? 'invert(100%) brightness(2)' : '' }}
+            />
             <div className="text-lg font-bold text-gray-900 dark:text-white">Planner</div>
           </div>
 
@@ -50,12 +61,12 @@ export default function Header() {
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md z-20">
                   <ul className="py-1">
                     <li className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                      Profile
-                    </li>
-                    <li className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                       Settings
                     </li>
-                    <li className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                    <li
+                      className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                    >
                       Logout
                     </li>
                   </ul>
@@ -87,7 +98,7 @@ function ThemeToggle() {
 
   return (
     <div
-      className="relative w-16 h-8 flex items-center bg-teal-500 dark:bg-gray-900 cursor-pointer rounded-full p-1"
+      className="relative w-16 h-8 flex items-center bg-teal-500 dark:bg-gray-700 cursor-pointer rounded-full px-[2px] border-2 border-gray-300 dark:border-gray-500"
       onClick={() => {
         if (resolvedTheme === 'dark') {
           setTheme('light')
@@ -98,7 +109,7 @@ function ThemeToggle() {
     >
       <FaMoon className="text-white" size={18} />
       <div
-        className={`absolute bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300`}
+        className={`absolute bg-white dark:bg-gray-300 w-6 h-6 rounded-full shadow-md transform transition-transform duration-300`}
         style={{
           transform: resolvedTheme === 'dark' ? 'translateX(35px)' : 'translateX(0px)'
         }}

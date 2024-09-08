@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id             String     @id @default(uuid())
+  username       String     @unique
+  googleId       String?
+  githubId       String?
+  email          String     @unique
+  active         Boolean    @default(true)
+  additionalData Json       @default("{}")
+  calendars      Calendar[] @relation("AccountCalendars")
+  lastLogin      DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@unique([email, googleId, githubId])
+}
+
+model Calendar {
+  id        Int     @id @default(autoincrement())
+  name      String
+  color     String?
+  accountId String
+  account   Account @relation("AccountCalendars", fields: [accountId], references: [id])
+  events    Event[] @relation("CalendarEvents")
+
+  @@index([accountId])
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  remindAt    DateTime?
+  calendarId  Int
+  calendar    Calendar  @relation("CalendarEvents", fields: [calendarId], references: [id])
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
+
+  @@index([startTime])
+  @@index([calendarId, startTime])
+}
+
+model Category {
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
+
+  @@index([name])
+}

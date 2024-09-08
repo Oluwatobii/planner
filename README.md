@@ -61,3 +61,80 @@ npx prisma migrate dev --name init
 ```
 npm run dev
 ```
+
+## Prisma
+
+### Setting up Prisma
+
+1. Install Prisma and Prisma Client
+
+```bash
+npm install prisma --save-dev
+
+npm install @prisma/client
+```
+
+2. Initialize prisma
+
+```bash
+npx prisma init
+```
+
+3. Update Database Schema
+
+When initially developing, it's safe to use
+
+```bash
+
+npx prisma db push
+
+```
+
+Since it hasnt been in any production enviroment yet.
+
+However, once deployed and changes needs to be made to the schema it's recommended to follow this workflow
+
+- Local Development:
+
+1. Modify Your Prisma Schema:
+
+- Make changes to your `schema.prisma` file.
+
+2. Apply Changes Locally:
+
+- If the changes affect the database structure, run:
+
+  ```bash
+  npx prisma migrate dev
+  ```
+
+- If the changes only affect the Prisma Client (not the database), run:
+
+  ```bash
+  npx prisma generate
+  ```
+
+- Production Deployment:
+
+1. Prepare Your Migration Files:
+
+- During development, after running `prisma migrate dev`, commit the migration files generated in the `prisma/migrations` directory to your version control.
+
+2. Deploy to Production:
+
+- After deploying your code to the production environment, apply the migrations to the production database with:
+
+  ```bash
+  npx prisma migrate deploy
+  ```
+
+- Key Points:
+  - `prisma migrate dev` is the main command you’ll use during local development for creating migrations and applying changes.
+  - `prisma migrate deploy` is what you use in production to safely apply migrations.
+  - `prisma generate` is used to regenerate the Prisma Client when you make schema changes that don’t require database alterations.
+
+### Using Prisma Studio
+
+```bash
+npx prisma studio
+```
