@@ -30,7 +30,7 @@ model Account {
 }
 
 model Calendar {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(uuid())
   name      String
   color     String?
   accountId String
@@ -41,25 +41,15 @@ model Calendar {
 }
 
 model Event {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   title       String
   description String?
   startTime   DateTime
   endTime     DateTime
   remindAt    DateTime?
-  calendarId  Int
+  calendarId  String
   calendar    Calendar  @relation("CalendarEvents", fields: [calendarId], references: [id])
-  categoryId  Int?
-  category    Category? @relation(fields: [categoryId], references: [id])
 
   @@index([startTime])
   @@index([calendarId, startTime])
-}
-
-model Category {
-  id     Int     @id @default(autoincrement())
-  name   String
-  events Event[]
-
-  @@index([name])
 }
