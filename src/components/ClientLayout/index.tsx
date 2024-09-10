@@ -18,9 +18,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <div className="flex flex-col h-screen w-screen">
       <Header />
-      <div className="flex flex-col h-[calc(100vh-55px)] w-screen">
+      <>
         <main className="flex-grow flex justify-center p-[10px] overflow-y-auto">{children}</main>
-      </div>
+      </>
     </div>
   )
 }

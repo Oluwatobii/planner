@@ -24,7 +24,7 @@ const calenders = [
 ]
 export default function HomePage() {
   return (
-    <>
+    <div className="flex h-[calc(100vh-55px)] w-screen">
       <div className="hidden md:flex w-1/5 bg-gray-100 dark:bg-gray-800 p-4 flex-col justify-between">
         <div>
           <CreateEvent />
@@ -56,11 +56,15 @@ export default function HomePage() {
       </div>
 
       <div className="w-full md:w-4/5 bg-white dark:bg-gray-900 p-3 h-full">
-        <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200 text-center">
-          Welcome to Your Planner
+        <h2 className="text-l md:text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200 text-center">
+          Welcome! Let&apos;s Plan Your Day, Your Way.
         </h2>
+        <div className="block md:hidden">
+          <CreateEvent />
+          <hr className="my-4" />
+        </div>
         <CalenderWrapper />
       </div>
-    </>
+    </div>
   )
 }
