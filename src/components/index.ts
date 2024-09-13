@@ -8,4 +8,6 @@ import Spinner from './Spinner'
 
 import ClientLayout from './ClientLayout'
 
-export { Header, Authentication, SessionWrapper, Spinner, ClientLayout }
+import PopupContainer from './PopupContainer'
+
+export { Header, Authentication, SessionWrapper, Spinner, ClientLayout, PopupContainer }

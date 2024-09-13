@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar as ReactBigCalendar, dateFnsLocalizer, View } from 'react-big-calendar'
+import { Calendar as ReactBigCalendar, dateFnsLocalizer, View, Views } from 'react-big-calendar'
 
 // import { getEventsForWeek } from '@/actions/getEventsForWeek';
 
@@ -35,6 +35,33 @@ type CalendarComponentProps = {
   currentView: View
 }
 
+const events = [
+  {
+    title: 'Orientation',
+    start: new Date('2024-09-11T15:30:00'),
+    end: new Date('2024-09-11:18:30:00'),
+    calendar: 3
+  },
+  {
+    title: 'REL-S47 Rollout',
+    start: new Date('2024-09-10T11:00:00'),
+    end: new Date('2024-09-10:12:30:00'),
+    calendar: 4
+  },
+  {
+    title: 'Daily Review',
+    start: new Date('2024-09-11T11:30:00'),
+    end: new Date('2024-09-11:13:30:00'),
+    calendar: 1
+  },
+  {
+    title: 'Help Desk',
+    start: new Date('2024-09-12T12:30:00'),
+    end: new Date('2024-09-12:14:30:00'),
+    calendar: 2
+  }
+]
+
 export default function CalendarComponent({ startDate, endDate, onRangeChange, currentView }: CalendarComponentProps) {
   // const events = await getEventsForWeek(startDate, endDate);
 
@@ -49,7 +76,7 @@ export default function CalendarComponent({ startDate, endDate, onRangeChange, c
     <div style={{ height: '500px' }}>
       <ReactBigCalendar
         localizer={localizer}
-        events={[]}
+        events={events}
         startAccessor="start"
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
@@ -57,6 +84,7 @@ export default function CalendarComponent({ startDate, endDate, onRangeChange, c
         // onRangeChange={onRangeChange}
         onView={(view: View) => onRangeChange({ start: startDate, end: endDate }, view)}
         view={currentView}
+        defaultView={Views.WEEK}
       />
     </div>
   )

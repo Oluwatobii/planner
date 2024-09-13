@@ -44,7 +44,7 @@ export default function Header() {
               <FaSearch className="absolute left-3 top-3 text-gray-400 dark:text-gray-600" />
               <input
                 type="search"
-                placeholder="Search..."
+                placeholder="Look for event calender and more..."
                 onChange={evt => context && context.setSearchQuery(evt.target.value)}
                 className="w-full pl-10 pr-4 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none"
               />
