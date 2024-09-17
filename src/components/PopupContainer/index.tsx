@@ -24,12 +24,13 @@ export default function PopupContainer({ popupComponents }: PopupContainerProps)
           style={component.style || {}}
           key={component.key}
         >
-          <div className="flex justify-between bg-gradient-to-br from-purple-600 via-pink-600 to-purple-800 text-black dark:text-white px-4 py-4 font-bold text-lg">
-            <h2>{component.title}</h2>
+          <div className="flex justify-between items-center bg-gradient-to-br from-purple-600 via-pink-600 to-purple-800 text-black dark:text-white px-4 py-4 font-bold text-lg">
+            <div className="flex-grow">{component.title ? <h2>{component.title}</h2> : null}</div>
             <div className="cursor-pointer">
-              {component.closeable ? <IoMdClose onClick={() => component.resolver(null)} /> : null}
+              {component.closeable && <IoMdClose onClick={() => component.resolver(null)} />}
             </div>
           </div>
+
           <div className="overflow-y-auto p-4 max-h-[calc(100vh-10rem)] md:max-h-[calc(100vh-15rem)]">
             {<component.content resolver={component.resolver} />}
           </div>

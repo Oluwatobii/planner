@@ -70,7 +70,7 @@ export default function usePopup() {
                     key={index}
                     style={{ backgroundColor: '#16A34A' }} // Tailwind's green-600 color
                     className="w-3/4 md:w-full text-black dark:text-white py-2 rounded-md flex items-center justify-center space-x-2"
-                    onClick={() => resolver(null)}
+                    onClick={() => resolver(text)}
                   >
                     <span className="hidden md:inline-block">
                       <FaCheckCircle />
@@ -86,7 +86,7 @@ export default function usePopup() {
                     key={index}
                     style={{ backgroundColor: '#F59E0B' }} // Tailwind's yellow-500 color
                     className="w-3/4 md:w-full text-black dark:text-white py-2 rounded-md flex items-center justify-center space-x-2"
-                    onClick={() => resolver(null)}
+                    onClick={() => resolver(text)}
                   >
                     <span className="hidden md:inline-block">
                       <IoIosWarning />
@@ -102,7 +102,7 @@ export default function usePopup() {
                     key={index}
                     style={{ backgroundColor: '#DC2626' }} // Tailwind's red-600 color
                     className="w-3/4 md:w-full text-black dark:text-white py-2 rounded-md flex items-center justify-center space-x-2"
-                    onClick={() => resolver(null)}
+                    onClick={() => resolver(text)}
                   >
                     <span className="hidden md:inline-block">
                       <MdDangerous />
@@ -117,7 +117,7 @@ export default function usePopup() {
                   key={index}
                   style={{ backgroundColor: '#1F2937' }} // Tailwind's gray-800 color
                   className="w-3/4 md:w-full text-black dark:text-white py-2 rounded-md flex items-center justify-center space-x-2"
-                  onClick={() => resolver(null)}
+                  onClick={() => resolver(text)}
                 >
                   <span>{text}</span>
                 </button>

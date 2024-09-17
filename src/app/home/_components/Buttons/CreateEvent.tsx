@@ -2,6 +2,8 @@
 
 import usePopup from '@/hooks/usePopup'
 
+import { Event as CreateEventForm } from '@/components'
+
 export default function CreateEvent() {
   const { createPopup } = usePopup()
 
@@ -13,7 +15,7 @@ export default function CreateEvent() {
           await createPopup({
             closeable: true,
             title: `Create Event`,
-            content: ({ resolver }: { resolver: (data: unknown) => void }) => <>Creating New Event</>
+            content: ({ resolver }: { resolver: (data: unknown) => void }) => <CreateEventForm resolver={resolver} />
           })
         }}
       >

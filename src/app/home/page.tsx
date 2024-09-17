@@ -49,9 +49,17 @@ export default function HomePage() {
         </div>
         <div className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
           <p>Planner © </p>
-          <a href="https://tbello.dev" target="_blank" rel="noopener">
-            Powered by Otbi Development
-          </a>
+          <p>
+            Powered by
+            <a
+              href="https://tbello.dev"
+              target="_blank"
+              rel="noopener"
+              className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent hover:from-green-500 hover:via-green-600 hover:to-green-700 transition-all duration-300 ml-1"
+            >
+              Otbi Development
+            </a>
+          </p>
         </div>
       </div>
 

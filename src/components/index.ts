@@ -10,4 +10,8 @@ import ClientLayout from './ClientLayout'
 
 import PopupContainer from './PopupContainer'
 
-export { Header, Authentication, SessionWrapper, Spinner, ClientLayout, PopupContainer }
+import EventDetails from './EventDetails'
+
+import Event from './Forms/Event'
+
+export { Header, Authentication, SessionWrapper, Spinner, ClientLayout, PopupContainer, EventDetails, Event }
