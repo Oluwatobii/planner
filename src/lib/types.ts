@@ -21,9 +21,6 @@ export type PopupContextType = {
 }
 
 export type CalendarComponentProps = {
-  startDate: Date
-  endDate: Date
-  onRangeChange: (range: { start: Date; end: Date }, view: View) => void
   currentView: View
   currentDate: Date
   onNavigate: (date: Date) => void

@@ -21,3 +21,32 @@
     }
   }
 }
+
+@layer components {
+  .rbc-today {
+    @apply bg-blue-200 text-gray-900;
+  }
+
+  .dark .rbc-today {
+    @apply bg-gray-700 text-gray-200;
+  }
+
+  .rbc-off-range-bg {
+    @apply bg-gray-200 text-gray-500;
+  }
+
+  .dark .rbc-off-range-bg {
+    @apply bg-gray-800 text-gray-500;
+  }
+
+  .dark .rbc-toolbar button:active,
+  .dark .rbc-toolbar button.rbc-active {
+    background-color: #4a5568;
+    color: #ffffff;
+  }
+
+  .dark .rbc-toolbar button {
+    background-color: inherit;
+    color: inherit;
+  }
+}

@@ -39,44 +39,59 @@ const localizer = dateFnsLocalizer({
 const events: CalendarEvent[] = [
   {
     title: 'Orientation',
-    start: new Date('2024-09-17T15:30:00'),
-    end: new Date('2024-09-17T18:30:00'),
+    start: new Date('2024-09-22T15:30:00'),
+    end: new Date('2024-09-22T18:30:00'),
     location: 'Conference Room 1',
     busy: true,
     calendar: { id: 'random-1-uuid', name: 'Company', color: '#28a720' }
   },
   {
     title: 'REL-S47 Rollout',
-    start: new Date('2024-09-18T11:00:00'),
-    end: new Date('2024-09-18T12:30:00'),
+    start: new Date('2024-09-23T11:00:00'),
+    end: new Date('2024-09-23T12:30:00'),
     busy: true,
     calendar: { id: 'random-2-uuid', name: 'Company', color: '#28a720' }
   },
   {
     title: 'Dinner',
-    start: new Date('2024-09-21T19:30:00'),
-    end: new Date('2024-09-21T21:30:00'),
+    start: new Date('2024-09-25T19:30:00'),
+    end: new Date('2024-09-25T21:30:00'),
     busy: true,
     calendar: { id: 'random-3-uuid', name: 'Family', color: '#3f20a7' }
   },
   {
-    title: 'Help Desk',
-    start: new Date('2024-09-16T09:30:00'),
-    end: new Date('2024-09-16T10:00:00'),
+    title: 'Bola Birthday',
+    start: new Date('2024-09-26T00:00:00'),
+    end: new Date('2024-09-26T00:00:00'),
     busy: true,
-    calendar: { id: 'random-4-uuid', name: 'My Calender', color: '#20a793' }
+    calendar: { id: 'random-4-uuid', name: 'Birthday', color: '#a720a7' }
+  },
+  {
+    title: 'Help Desk',
+    start: new Date('2024-09-28T09:30:00'),
+    end: new Date('2024-09-28T10:00:00'),
+    busy: true,
+    calendar: { id: 'random-5-uuid', name: 'My Calender', color: '#20a793' }
   }
 ]
 
-export default function CalendarComponent({
-  startDate,
-  endDate,
-  onNavigate,
-  onView,
-  currentView,
-  currentDate
-}: CalendarComponentProps) {
+interface CustomWrapperProps {
+  children?: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}
+
+export default function CalendarComponent({ onNavigate, onView, currentView, currentDate }: CalendarComponentProps) {
   // const events = await getEventsForWeek(startDate, endDate);
+  const scrollToTime = new Date() // This will scroll to the current time
+
+  const components = {
+    timeSlotWrapper: ({ children, className, style, ...props }: CustomWrapperProps) => (
+      <div style={{ ...style, minHeight: '45px' }} className={className} {...props}>
+        {children}
+      </div>
+    )
+  }
 
   const ReactBigCalendar = withDragAndDrop(Calendar)
 
@@ -153,12 +168,14 @@ export default function CalendarComponent({
         localizer={localizer}
         events={events}
         draggableAccessor={event => true}
+        components={components}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleSelectEvent}
         onEventDrop={handleEventDrop}
         onEventResize={handleEventResize}
         onSelectSlot={handleSelectSlot}
         selectable
+        scrollToTime={scrollToTime}
         onNavigate={onNavigate}
         onView={onView}
         view={currentView}

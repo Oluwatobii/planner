@@ -1,6 +1,10 @@
 'use client'
 
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
+
+import Link from 'next/link'
+
+import { useRouter } from 'next/navigation'
 
 import { useTheme } from 'next-themes'
 
@@ -19,15 +23,33 @@ export default function Header() {
 
   const { resolvedTheme } = useTheme()
 
+  const router = useRouter()
+
   const [menuOpen, setMenuOpen] = useState(false)
 
   const context = useContext(AppContext)
+
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [menuRef])
 
   if (session)
     return (
       <nav className="bg-white dark:bg-gray-900 p-[5px] shadow-md dark:shadow-dark-md">
         <div className="px-4 mx-auto flex items-center justify-between relative">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1" onClick={() => router.push('/home')}>
             <Image
               src="/planner.png"
               alt="Logo"
@@ -52,7 +74,7 @@ export default function Header() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="relative">
+            <div className="relative" ref={menuRef}>
               <FaUserCircle
                 className="text-2xl text-gray-900 dark:text-white cursor-pointer"
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -60,8 +82,21 @@ export default function Header() {
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md z-20">
                   <ul className="py-1">
-                    <li className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                      Settings
+                    <li>
+                      <Link
+                        href="/home"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      >
+                        Home
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/settings"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      >
+                        Settings
+                      </Link>
                     </li>
                     <li
                       className="px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
