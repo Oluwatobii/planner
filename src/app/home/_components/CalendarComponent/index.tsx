@@ -81,9 +81,20 @@ interface CustomWrapperProps {
   style?: React.CSSProperties
 }
 
-export default function CalendarComponent({ onNavigate, onView, currentView, currentDate }: CalendarComponentProps) {
+export default function CalendarComponent({
+  isMobileView,
+  onNavigate,
+  onView,
+  currentView,
+  currentDate
+}: CalendarComponentProps) {
   // const events = await getEventsForWeek(startDate, endDate);
-  const scrollToTime = new Date() // This will scroll to the current time
+
+  const scrollToTime = new Date()
+
+  const availableViews = isMobileView
+    ? { day: true, agenda: true }
+    : { day: true, week: true, month: true, agenda: true }
 
   const components = {
     timeSlotWrapper: ({ children, className, style, ...props }: CustomWrapperProps) => (
@@ -142,11 +153,6 @@ export default function CalendarComponent({ onNavigate, onView, currentView, cur
           // console.log('Event Selected', { event: calendarEvent })
           return <EventDetails resolver={resolver} event={calendarEvent} />
         }
-        /*
-        style: {
-          width: '20%'
-        }
-        */
       })
     },
     [createPopup]
@@ -179,6 +185,7 @@ export default function CalendarComponent({ onNavigate, onView, currentView, cur
         onNavigate={onNavigate}
         onView={onView}
         view={currentView}
+        views={availableViews}
         date={currentDate}
         defaultView={Views.WEEK}
       />

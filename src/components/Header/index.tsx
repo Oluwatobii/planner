@@ -49,7 +49,7 @@ export default function Header() {
     return (
       <nav className="bg-white dark:bg-gray-900 p-[5px] shadow-md dark:shadow-dark-md">
         <div className="px-4 mx-auto flex items-center justify-between relative">
-          <div className="flex items-center space-x-1" onClick={() => router.push('/home')}>
+          <div className="flex items-center space-x-1 cursor-pointer" onClick={() => router.push('/home')}>
             <Image
               src="/planner.png"
               alt="Logo"

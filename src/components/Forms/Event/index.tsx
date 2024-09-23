@@ -9,7 +9,6 @@ import { FaTimes, FaSave } from 'react-icons/fa'
 import { format } from 'date-fns'
 
 import { CalendarEvent } from '@/lib/types'
-import { start } from 'repl'
 
 function formatDate(date: stringOrDate | undefined): string {
   return date ? (typeof date === 'string' ? date : format(date, "yyyy-MM-dd'T'HH:mm")) : ''

@@ -21,6 +21,7 @@ export type PopupContextType = {
 }
 
 export type CalendarComponentProps = {
+  isMobileView: boolean
   currentView: View
   currentDate: Date
   onNavigate: (date: Date) => void

@@ -82,7 +82,7 @@ export default function EventDetails({ resolver, event }: { resolver: (data: unk
               content: ({ resolver }) =>
                 popups.confirm({
                   resolver,
-                  message: `Are you sure you want to delete the event ${event.title}? This action cannot be undone.`,
+                  message: `Are you sure you want to delete the event: "${event.title}"? This action cannot be undone.`,
                   options
                 })
             })
@@ -90,6 +90,7 @@ export default function EventDetails({ resolver, event }: { resolver: (data: unk
             if (confirm === options[1].text) return
 
             console.log('Deleting Event', { confirm })
+            resolver(null)
           }}
         >
           <FaTrash className="mr-2" /> Delete
