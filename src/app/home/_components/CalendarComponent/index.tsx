@@ -16,7 +16,7 @@ import { EventDetails } from '@/components'
 
 import { format, parse, startOfWeek, getDay } from 'date-fns'
 
-import enUS from 'date-fns/locale/en-US'
+import { enUS } from 'date-fns/locale'
 
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 

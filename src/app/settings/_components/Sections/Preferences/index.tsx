@@ -1,13 +1,15 @@
-import { useState } from 'react'
+'use client'
 
-const timezones = ['GMT', 'UTC', 'EST', 'CST', 'MST', 'PST', 'CET', 'EET', 'IST', 'JST', 'AEST']
+import { useState, useContext } from 'react'
+
+import timezones from 'timezones-list'
+
+import { AppContext } from '@/contexts/Application'
 
 export default function Preferences() {
-  const [selectedTimezone, setSelectedTimezone] = useState('')
+  const context = useContext(AppContext)
 
-  const handleTimezoneChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTimezone(event.target.value)
-  }
+  const [timezone, setTimezone] = useState(context?.timezone)
 
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -15,21 +17,25 @@ export default function Preferences() {
       <div className="mb-4">
         <label className="block text-gray-700 dark:text-gray-200 mb-2">Select Timezone</label>
         <select
-          value={selectedTimezone}
-          onChange={handleTimezoneChange}
+          value={timezone}
+          disabled={true}
+          onChange={event => setTimezone(event.target.value)}
           className="block w-full p-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-white"
         >
           <option value="" disabled>
             Select Timezone
           </option>
-          {timezones.map((timezone, idx) => (
-            <option key={idx} value={timezone}>
-              {timezone}
+          {timezones.map(({ label, tzCode, name, utc }, idx) => (
+            <option key={idx} value={tzCode}>
+              {label}
             </option>
           ))}
         </select>
       </div>
-      <button className="px-4 py-2 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-800 text-white rounded-md hover:from-purple-700 hover:via-pink-700 hover:to-purple-900">
+      <button
+        disabled={true}
+        className="px-4 py-2 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-800 text-white rounded-md hover:from-purple-700 hover:via-pink-700 hover:to-purple-900"
+      >
         Update Timezone
       </button>
     </div>
