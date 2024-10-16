@@ -2,46 +2,110 @@
 
 import React, { useState } from 'react'
 
+import useSWR from 'swr'
+
+import useSWRMutation from 'swr/mutation'
+
 import { FaTrash, FaChevronDown, FaChevronUp } from 'react-icons/fa'
+
+import { fetcher } from '@/utils/helpers'
 
 import usePopup from '@/hooks/usePopup'
 
-type Calendar = {
-  id: string
-  name: string
-  color: string
-}
+import { z } from 'zod'
+
+import { Calendar } from '@/lib/types'
+
+const calendarSchema = z.object({
+  name: z.string().min(1, 'Calendar name is required'),
+  color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, 'Calendar color must be a valid hex code')
+})
 
 export default function Calendars() {
   const { createPopup, popups } = usePopup()
 
+  const [formData, setFormData] = useState({ name: '', color: '#0000' })
   const [showCalendars, setShowCalendars] = useState(false)
 
-  const [calendars, setCalendars] = useState<Calendar[]>([
-    { id: '1', name: 'National Holiday', color: '#00ff00' },
-    { id: '2', name: 'Personal', color: '#1d3dbf' },
-    { id: '3', name: 'Work', color: '#ff0000' }
-  ])
+  const [editingCalendar, setEditingCalendar] = useState<{
+    id: string
+    name: string
+    color: string
+  } | null>(null)
 
-  /** Create New Calender */
-  const [formData, setFormData] = useState({ name: '', color: '' })
+  const { data: calendars = [], mutate } = useSWR<Calendar[]>('/api/calendars', fetcher)
 
-  const handleCreateCalendar = (e: React.FormEvent) => {
+  const createCalendar = async (url: string, { arg }: { arg: { name: string; color: string } }) => {
+    const validation = calendarSchema.safeParse(arg)
+    if (!validation.success) {
+      throw new Error(validation.error.errors[0].message)
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(arg)
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to create calendar')
+    }
+
+    return response.json()
+  }
+
+  const { trigger: createTrigger } = useSWRMutation('/api/calendars', createCalendar, {
+    populateCache: (newCalendar, calendars) => [...(calendars || []), newCalendar],
+    revalidate: false,
+    onError: error => console.error('Error creating calendar:', error)
+  })
+
+  const { trigger: updateTrigger } = useSWRMutation(
+    '/api/calendars',
+    (url: string, { arg }: { arg: { id: string; data: Partial<Calendar> } }) =>
+      fetcher(`${url}/${arg.id}`, 'PUT', arg.data)
+  )
+
+  const { trigger: deleteTrigger } = useSWRMutation('/api/calendars', (url: string, { arg }: { arg: { id: string } }) =>
+    fetcher(`${url}/${arg.id}`, 'DELETE')
+  )
+
+  const handleCreateCalendar = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (formData.name.trim()) {
-      const newCalendar: Calendar = {
-        id: Math.random().toString(36),
-        ...formData
-      }
-
-      setCalendars([...calendars, newCalendar])
-      setFormData({ name: '', color: '' })
+    try {
+      const newCalendar: Calendar = await createTrigger({ name: formData.name, color: formData.color })
+      mutate([...calendars, newCalendar], false)
+      setFormData({ name: '', color: '#000000' })
+    } catch (err) {
+      console.error('Error creating calendar:', err)
     }
   }
 
-  const handleUpdateCalendar = ({ id, data }: { id: string; data: Partial<Calendar> }) => {
-    console.log({ id, data })
+  const handleUpdateCalendar = async ({ id, data }: { id: string; data: Partial<Calendar> }) => {
+    try {
+      await updateTrigger({ id, data })
+
+      mutate(
+        calendars.map(calendar => (calendar.id === id ? { ...calendar, ...data } : calendar)),
+        false
+      )
+    } catch (error) {
+      console.error('Error updating calendar:', error)
+    }
+  }
+
+  const handleDeleteCalendar = async (id: string) => {
+    try {
+      await deleteTrigger({ id })
+
+      mutate(
+        calendars.filter(calendar => calendar.id !== id),
+        false
+      )
+    } catch (error) {
+      console.error('Error deleting calendar:', error)
+    }
   }
 
   return (
@@ -97,29 +161,47 @@ export default function Calendars() {
                 <div className="flex items-center">
                   <input
                     type="text"
-                    value={name}
-                    onChange={evt =>
-                      setCalendars(prevCalendars =>
-                        prevCalendars.map(calendar =>
-                          calendar.id === id ? { ...calendar, name: evt.target.value } : calendar
-                        )
-                      )
-                    }
-                    onBlur={evt => handleUpdateCalendar({ id, data: { name: evt.target.value } })}
+                    value={editingCalendar?.id === id ? editingCalendar.name : name}
+                    onChange={e => {
+                      setEditingCalendar(prev => {
+                        if (!prev || prev.id !== id) {
+                          return { id, name: e.target.value, color }
+                        }
+
+                        return { ...prev, name: e.target.value }
+                      })
+                    }}
+                    onBlur={async () => {
+                      if (editingCalendar) {
+                        handleUpdateCalendar({
+                          id: editingCalendar.id,
+                          data: { name: editingCalendar.name, color: editingCalendar.color }
+                        })
+                      }
+                    }}
                     className="block w-full p-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-white"
                   />
 
                   <input
                     type="color"
-                    value={color}
-                    onChange={evt =>
-                      setCalendars(prevCalendars =>
-                        prevCalendars.map(calendar =>
-                          calendar.id === id ? { ...calendar, color: evt.target.value } : calendar
-                        )
-                      )
-                    }
-                    onBlur={evt => handleUpdateCalendar({ id, data: { color: evt.target.value } })}
+                    value={editingCalendar?.id === id ? editingCalendar.color : color}
+                    onChange={e => {
+                      setEditingCalendar(prev => {
+                        if (!prev || prev.id !== id) {
+                          return { id, name, color: e.target.value }
+                        }
+
+                        return { ...prev, color: e.target.value }
+                      })
+                    }}
+                    onBlur={async () => {
+                      if (editingCalendar) {
+                        handleUpdateCalendar({
+                          id: editingCalendar.id,
+                          data: { name: editingCalendar.name, color: editingCalendar.color }
+                        })
+                      }
+                    }}
                     className="ml-4 w-10 h-10 p-1 border border-gray-300 dark:border-gray-600 rounded-md"
                   />
                 </div>
@@ -151,7 +233,7 @@ export default function Calendars() {
 
                       if (confirm === options[1].text) return
 
-                      setCalendars(prevCalendars => prevCalendars.filter(calendar => calendar.id !== id))
+                      await handleDeleteCalendar(id)
                     }}
                     className="px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
                   >

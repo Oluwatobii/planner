@@ -18,6 +18,7 @@ model Account {
   username       String     @unique
   googleId       String?
   githubId       String?
+  timezone       String?
   email          String     @unique
   active         Boolean    @default(true)
   additionalData Json       @default("{}")
@@ -32,7 +33,7 @@ model Account {
 model Calendar {
   id        String  @id @default(uuid())
   name      String
-  color     String?
+  color     String
   accountId String
   account   Account @relation("AccountCalendars", fields: [accountId], references: [id])
   events    Event[] @relation("CalendarEvents")
@@ -44,6 +45,8 @@ model Event {
   id          String    @id @default(uuid())
   title       String
   description String?
+  isBusy      Boolean   @default(false)
+  location    String?
   startTime   DateTime
   endTime     DateTime
   remindAt    DateTime?

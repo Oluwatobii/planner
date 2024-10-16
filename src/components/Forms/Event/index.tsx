@@ -4,9 +4,11 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react'
 
 import { stringOrDate } from 'react-big-calendar'
 
-import { FaTimes, FaSave } from 'react-icons/fa'
+import { FaTimes, FaSave, FaPlusCircle } from 'react-icons/fa'
 
 import { format } from 'date-fns'
+
+import { useRouter } from 'next/navigation'
 
 import { CalendarEvent } from '@/lib/types'
 
@@ -33,6 +35,8 @@ export default function EventDetails({
   resolver: (data: unknown) => void
   event?: CalendarEvent
 }) {
+  const router = useRouter()
+
   const calendars = useMemo(
     () => [
       { id: 'random-1-uuid', name: 'My Calender', color: '#20a793' },
@@ -105,6 +109,31 @@ export default function EventDetails({
   useEffect(() => {
     setFormData(initializeFormData())
   }, [initializeFormData])
+
+  if (!calendars.length) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full p-4 bg-gray-100 dark:bg-gray-900">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <FaPlusCircle className="text-5xl text-purple-600 dark:text-purple-400" />
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">No Calendars Found</h2>
+          <p className="text-gray-700 dark:text-gray-300 max-w-sm">
+            It looks like you don&apos;t have any calendars set up. Please create a new calendar from the{' '}
+            <span className="font-semibold text-purple-600 dark:text-purple-400">Calendars</span> tab in the settings
+            page.
+          </p>
+          <button
+            onClick={() => {
+              router.push('/settings')
+              resolver(null)
+            }}
+            className="mt-4 px-4 py-2 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-800 text-white rounded-md hover:from-purple-700 hover:via-pink-700 hover:to-purple-900 transition-all duration-200"
+          >
+            Go to Settings
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <form className="p-2 dark:bg-gray-800 rounded-lg  mx-auto" onSubmit={handleSubmit}>

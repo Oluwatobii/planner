@@ -1,46 +1,46 @@
 import { CalenderWrapper, CreateEvent } from './_components'
 
-const calenders = [
-  {
-    name: 'My Calender',
-    color: '#20a793'
-  },
-  {
-    name: 'Company',
-    color: '#28a720'
-  },
-  {
-    name: 'Family',
-    color: '#3f20a7'
-  },
-  {
-    name: 'Birthdays',
-    color: '#a720a7'
-  },
-  {
-    name: 'National Holidays',
-    color: '#206aa7'
+import { redirect } from 'next/navigation'
+
+import { prisma } from '@/lib/db'
+
+import { getServerSession } from 'next-auth/next'
+
+import { authOptions } from '@/lib/authOptions'
+
+export const dynamic = 'force-dynamic'
+
+export default async function HomePage() {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return redirect('/')
   }
-]
-export default function HomePage() {
+
+  const calendars = await prisma.calendar.findMany({
+    where: {
+      accountId: session.user.id
+    }
+  })
+
   return (
     <div className="flex h-[calc(100vh-55px)] w-screen">
       <div className="hidden md:flex w-1/5 bg-gray-100 dark:bg-gray-800 p-4 flex-col justify-between">
         <div>
           <CreateEvent />
 
-          <hr className="my-4 border-gray-300 dark:border-gray-600" />
+          {/* <hr className="my-4 border-gray-300 dark:border-gray-600" />
           <div className="flex items-center mb-4">
             <input type="checkbox" id="view-all" className="mr-2" />
             <label htmlFor="view-all" className="text-gray-700 dark:text-gray-300">
               View All
             </label>
-          </div>
+          </div> */}
           <hr className="my-4 border-gray-300 dark:border-gray-600" />
 
           <ul className="space-y-2">
-            {calenders.map(({ name, color }) => (
-              <li key={name} className="flex items-center">
+            {calendars.map(({ id, name, color }) => (
+              <li key={id} className="flex items-center">
                 <span className="w-3 h-3 rounded-full inline-block mr-2" style={{ backgroundColor: color }}></span>
                 <span className="text-gray-700 dark:text-gray-300">{name}</span>
               </li>

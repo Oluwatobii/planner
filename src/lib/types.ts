@@ -54,3 +54,9 @@ export type EventDropArgs = {
   isAllDay?: boolean
   resourceId?: any
 }
+
+export type Calendar = {
+  id: string
+  name: string
+  color: string
+}

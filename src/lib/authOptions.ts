@@ -30,6 +30,8 @@ export const authOptions: NextAuthOptions = {
           }
         })
 
+        let userId
+
         if (exist) {
           const updateData: Prisma.AccountUpdateInput = {
             lastLogin: new Date()
@@ -45,8 +47,10 @@ export const authOptions: NextAuthOptions = {
               data: updateData
             })
           }
+
+          userId = exist.id
         } else {
-          await prisma.account.create({
+          const newUser = await prisma.account.create({
             data: {
               email: user.email,
               username: user.name,
@@ -56,14 +60,61 @@ export const authOptions: NextAuthOptions = {
               githubId: account?.provider === 'github' ? user.id : null
             }
           })
-        }
 
+          userId = newUser.id
+        }
+        user.id = userId
         return true
       } catch (err) {
         console.error('Error creating or updating user:', err)
         return false
       }
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.sub as string
+      }
+      return session
     }
   },
   secret: process.env.NEXTAUTH_SECRET
 }
+
+/**
+type AuthorizationResult = { authorize: boolean }
+
+const otbiAuthorized = async ({ email }: { email: string }): Promise<AuthorizationResult> => {
+  if (!config.otbi?.api || !config.otbi?.apiKey || !config.otbi?.origin) return { authorize: true }
+
+  const { api, apiKey, origin } = config.otbi
+  const URL = `${api}/api/authorized/emails/${apiKey}`
+
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    Origin: origin || ''
+  })
+
+  try {
+    const response = await fetch(URL, { headers })
+
+    const data: { emails?: string[] } = (await response.json()) as { emails?: string[] }
+    const { emails = [] } = data
+
+    if (emails && emails.length && !emails.includes(email)) return { authorize: false }
+    else return { authorize: true }
+  } catch (error) {
+    console.error(`Error during authorization check`)
+    return { authorize: true }
+  }
+}
+
+const { authorize } = await otbiAuthorized({ email: profile.email })
+
+if (!authorize) return cb(null, false)
+ */
